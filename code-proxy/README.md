@@ -241,6 +241,5 @@ public class $Proxy0 implements IUserService {
 }
 ```
 
-![]()
-
+![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-proxy/img/1.png)    
 ---
