@@ -2,9 +2,9 @@
 
 > 1.生成java源码
 2.將源码输出到java文件中   
-3.将java文件编译成class文件
-4.将class加载进jvm  
-5.返回代理类对象  
+3.将java文件编译成class文件  
+4.将class加载进jvm     
+5.返回代理类对象     
 
 ---
 测试
@@ -39,6 +39,14 @@ public class MyTest {
 }
 ```
 
+---
+结果
+> Connected to the target VM, address: '127.0.0.1:49209', transport: 'socket'   
+  Disconnected from the target VM, address: '127.0.0.1:49209', transport: 'socket'   
+  before   
+  删除用户 id:100   
+  after
+  
 ---
 MyClassLoader
 ```java
@@ -203,15 +211,12 @@ public class MyProxy implements Serializable {
 }
 ```
 ---
-结果
-> Connected to the target VM, address: '127.0.0.1:49209', transport: 'socket'   
-  Disconnected from the target VM, address: '127.0.0.1:49209', transport: 'socket'   
-  before   
-  删除用户 id:100   
-  after
-  
-  ---
+
 生成的代理类
+
+![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-proxy/img/1.png)    
+
+
 ```java
 //
 // Source code recreated from a .class file by IntelliJ IDEA
@@ -241,5 +246,4 @@ public class $Proxy0 implements IUserService {
 }
 ```
 
-![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-proxy/img/1.png)    
 ---
