@@ -49,7 +49,8 @@ public class MyClassLoader extends ClassLoader{
                             e.printStackTrace();
                         }
                     }
-                    f.delete();
+                    // 查看.class文件
+                    // f.delete();
                 }
             }
         }

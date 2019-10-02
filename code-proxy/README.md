@@ -211,3 +211,36 @@ public class MyProxy implements Serializable {
   after
   
   ---
+生成的代理类
+```java
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
+package com.my;
+
+import com.IUserService;
+import java.lang.reflect.Method;
+
+public class $Proxy0 implements IUserService {
+    private MyInvocationHandler h;
+
+    public $Proxy0(MyInvocationHandler var1) {
+        this.h = var1;
+    }
+
+    public void delete(String var1) {
+        try {
+            Method var2 = IUserService.class.getMethod("delete", String.class);
+            this.h.invoke(this, var2, new Object[]{var1});
+        } catch (Throwable var3) {
+            var3.printStackTrace();
+        }
+    }
+}
+```
+
+![]()
+
+---
