@@ -45,6 +45,10 @@ public class MyIoc {
         return beanFactory.get(completeClassName);
     }
 
+    public static Object getObject(Class clz){
+        return beanFactory.get(clz.getTypeName());
+    }
+
     public static void updateBean(String completeClassName, Object object){
         beanFactory.put(completeClassName, object);
     }
