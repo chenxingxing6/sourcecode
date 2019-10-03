@@ -1,7 +1,30 @@
 ## 自己实现AOP代理
 ---
-###### 1.实现简易版IOC容器   
-实现一个简易的IOC容器，管理Bean，从IOC容器的BeanFactory中获取实例，从而取代自己new实例的做法。
+## 需求
+> 1.前置通知，后置返回通知，环绕通知，后置通知，异常通知   
+> 2.自己实现一个简单版IOC容器   
+> 3.通过动态代理 + 通知注解类实现   
+> 4.定义切入点，正则表达式 @pointcut   
 
-![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-springaop/img/1.png)    
+---
+## 思路整理
+1.涉及的角色：
+> ①被代理类；  
+②被代理类要实现的接口；   
+③代理类；   
+④动态创建“代理类的对象”的类；   
+⑤注解类：    
+　a. 切面注解类，注解在类上：@Aspect     
+　b. 各种通知注解，注解在方法上：   
+　　 __@Before   
+　　 __@AfterReturning   
+　　 __@After   
+　　 __@AfterThrowing   
+　　 __@Around   
+⑥IOC容器：BeanFactory   
+
+---
+## 实现步骤
+
+---
 
