@@ -14,6 +14,7 @@
         <module>code-ioc</module>
         <module>study-io</module>
         <module>study-chat</module>
+        <module>code-netty-tomcat</module>
     </modules>
 
 
