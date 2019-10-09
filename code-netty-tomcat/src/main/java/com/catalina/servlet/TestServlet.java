@@ -20,6 +20,7 @@ public class TestServlet extends Servlet {
         resp.setContentType("text/html; charset=utf-8");
         String html = "<h2>自己手写Netty实现Tomcat&热部署</h2><hr>";
         html += "<div>name："+ name +"<div>";
+        html += "update.....";
         resp.write(html);
     }
 }
