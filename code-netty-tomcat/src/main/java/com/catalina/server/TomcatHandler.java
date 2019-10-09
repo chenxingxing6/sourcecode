@@ -19,10 +19,12 @@ import java.util.regex.Pattern;
  */
 public class TomcatHandler extends ChannelInboundHandlerAdapter {
     private static final Map<Pattern,Class<?>> servletMapping = new HashMap<Pattern, Class<?>>();
+    private static String applicationName;
 
 
     static {
         Config.load("web.properties");
+        applicationName = Config.getValue("application.name");
         for (String key : Config.getKeys()) {
             if (key.startsWith("servlet")){
                 String name = key.replaceFirst("servlet.", "");
@@ -30,6 +32,9 @@ public class TomcatHandler extends ChannelInboundHandlerAdapter {
                     name = name.substring(0, name.indexOf("."));
                 }
                 String pattern = Config.getValue("servlet." + name + ".urlPattern").replaceAll("\\*", ".*");
+                if (applicationName != null){
+                    pattern = "/"+ applicationName + pattern;
+                }
                 String className = Config.getValue("servlet." + name + ".className");
                 if (!servletMapping.containsKey(pattern)){
                     try {
@@ -56,6 +61,11 @@ public class TomcatHandler extends ChannelInboundHandlerAdapter {
         String uri = request.getUri();
         String requestType = request.getRequestType();
         System.out.println("请求：" + uri + "type:" + requestType);
+        if (applicationName != null && !uri.contains(applicationName)){
+            String out = String.format("404 Not Found");
+            response.write(out);
+            return;
+        }
         try {
             boolean hasPattern = false;
             for (Map.Entry<Pattern, Class<?>> entry : servletMapping.entrySet()) {
