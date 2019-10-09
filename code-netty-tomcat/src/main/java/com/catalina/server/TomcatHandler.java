@@ -4,6 +4,7 @@ import com.catalina.config.Config;
 import com.catalina.http.Request;
 import com.catalina.http.Response;
 import com.catalina.http.Servlet;
+import com.hot.MyClassLoader;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.HttpRequest;
@@ -18,7 +19,7 @@ import java.util.regex.Pattern;
  * Desc:
  */
 public class TomcatHandler extends ChannelInboundHandlerAdapter {
-    private static final Map<Pattern,Class<?>> servletMapping = new HashMap<Pattern, Class<?>>();
+    private static final Map<Pattern,String> servletMapping = new HashMap<Pattern, String>();
     private static String applicationName;
 
 
@@ -38,7 +39,7 @@ public class TomcatHandler extends ChannelInboundHandlerAdapter {
                 String className = Config.getValue("servlet." + name + ".className");
                 if (!servletMapping.containsKey(pattern)){
                     try {
-                        servletMapping.put(Pattern.compile(pattern), Class.forName(className));
+                        servletMapping.put(Pattern.compile(pattern), className);
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -68,9 +69,17 @@ public class TomcatHandler extends ChannelInboundHandlerAdapter {
         }
         try {
             boolean hasPattern = false;
-            for (Map.Entry<Pattern, Class<?>> entry : servletMapping.entrySet()) {
+            for (Map.Entry<Pattern, String> entry : servletMapping.entrySet()) {
                 if (entry.getKey().matcher(uri).matches()){
-                    Servlet servlet = (Servlet) entry.getValue().newInstance();
+                    // 自定义类加载器，实现热部署
+                    Class<?> clz = null;
+                    try {
+                        MyClassLoader myLoader = new MyClassLoader();
+                        clz = myLoader.findClass(entry.getValue());
+                    }catch (Exception e){
+                        throw new RuntimeException("类加载异常，" + e.getMessage());
+                    }
+                    Servlet servlet = (Servlet) clz.newInstance();
                     if ("get".equalsIgnoreCase(requestType)){
                         servlet.doGet(request, response);
                     }else {
