@@ -1,11 +1,16 @@
 package com.catalina.server;
 
+import com.catalina.config.Config;
 import com.catalina.http.Request;
 import com.catalina.http.Response;
-import com.catalina.servlet.TestServlet;
+import com.catalina.http.Servlet;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.HttpRequest;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * User: lanxinghua
@@ -13,6 +18,30 @@ import io.netty.handler.codec.http.HttpRequest;
  * Desc:
  */
 public class TomcatHandler extends ChannelInboundHandlerAdapter {
+    private static final Map<Pattern,Class<?>> servletMapping = new HashMap<Pattern, Class<?>>();
+
+
+    static {
+        Config.load("web.properties");
+        for (String key : Config.getKeys()) {
+            if (key.startsWith("servlet")){
+                String name = key.replaceFirst("servlet.", "");
+                if (name.indexOf(".") != -1){
+                    name = name.substring(0, name.indexOf("."));
+                }
+                String pattern = Config.getValue("servlet." + name + ".urlPattern").replaceAll("\\*", ".*");
+                String className = Config.getValue("servlet." + name + ".className");
+                if (!servletMapping.containsKey(pattern)){
+                    try {
+                        servletMapping.put(Pattern.compile(pattern), Class.forName(className));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof HttpRequest){
@@ -23,11 +52,31 @@ public class TomcatHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
-    public void doServlet(Request request, Response resp){
+    public void doServlet(Request request, Response response){
+        String uri = request.getUri();
+        String requestType = request.getRequestType();
+        System.out.println("请求：" + uri + "type:" + requestType);
         try {
-            TestServlet.class.newInstance().doGet(request, resp);
+            boolean hasPattern = false;
+            for (Map.Entry<Pattern, Class<?>> entry : servletMapping.entrySet()) {
+                if (entry.getKey().matcher(uri).matches()){
+                    Servlet servlet = (Servlet) entry.getValue().newInstance();
+                    if ("get".equalsIgnoreCase(requestType)){
+                        servlet.doGet(request, response);
+                    }else {
+                        servlet.doPost(request, response);
+                    }
+                    hasPattern = true;
+                }
+            }
+            if (!hasPattern){
+                String out = String.format("404 Not Found");
+                response.write(out);
+                return;
+            }
         }catch (Exception e){
-            e.printStackTrace();
+            String out = String.format("500 Error msg:%s", e.getStackTrace());
+            response.write(out);
         }
     }
 }
