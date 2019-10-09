@@ -26,10 +26,10 @@ http://localhost:8080/test?name=2044
 
 ---
   
-![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-netty-tomcat/img/3.jpg)    
+![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-netty-tomcat/img/3.png)    
 
 ---
-![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-netty-tomcat/img/4.jpg)    
+![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-netty-tomcat/img/4.png)    
 
 ---
 ##### 热部署
