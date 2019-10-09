@@ -6,6 +6,9 @@
 4.将class加载进jvm     
 5.返回代理类对象     
 
+
+![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-proxy/img/2.jpg)    
+
 ---
 测试
 ```java
