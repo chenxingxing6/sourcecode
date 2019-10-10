@@ -1,31 +1,31 @@
-Date.prototype.format = function(format){ 
-	var o = { 
-	"M+" : this.getMonth()+1, //月 
+Date.prototype.format = function(format){
+	var o = {
+	"M+" : this.getMonth()+1, //月
 	"d+" : this.getDate(), //日
 	"h+" : this.getHours(), //时
 	"m+" : this.getMinutes(), //分
 	"s+" : this.getSeconds(), //秒
 	"q+" : Math.floor((this.getMonth()+3)/3), //刻
 	"S" : this.getMilliseconds() //毫秒
-	} 
-	
-	if(/(y+)/.test(format)) { 
-		format = format.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length)); 
-	} 
-	
-	for(var k in o) { 
-		if(new RegExp("("+ k +")").test(format)) { 
-			format = format.replace(RegExp.$1, RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length)); 
-		} 
-	} 
-	return format; 
+	}
+
+	if(/(y+)/.test(format)) {
+		format = format.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+	}
+
+	for(var k in o) {
+		if(new RegExp("("+ k +")").test(format)) {
+			format = format.replace(RegExp.$1, RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length));
+		}
+	}
+	return format;
 };
 
 $(document).ready(function(){
 	var host = location.href.replace(/http:\/\//i,"");
 	window.CHAT = {
 		//保存服务器端WebSocket的请求地址
-		serverAddr:"ws://" + host + "im",
+		serverAddr:"ws://" + host + "myim",
 		//保存用户输入的昵称
 		nickname:null,
 		//保存浏览器socket对象
@@ -127,12 +127,12 @@ $(document).ready(function(){
 			    		CHAT.sendText();
 			    }
 			});
-			
+
 			CHAT.nickname = nickname;
-			
+
 			$("#shownikcname").html(nickname);
-			
-			
+
+
 			//添加系统提示
 			var addSystemTip = function(c){
 				var html = "";
@@ -142,7 +142,7 @@ $(document).ready(function(){
 		        var section = document.createElement('section');
 		        section.className = 'system J-mjrlinkWrap J-cutMsg';
 		        section.innerHTML = html;
-		        
+
 		        $("#onlinemsg").append(section);
 			};
 			//将消息添加到聊天面板
@@ -157,7 +157,7 @@ $(document).ready(function(){
 				cmd = labelArr[0];
 				time = labelArr[1];
 				name = labelArr[2];
-				
+
 				if(cmd == "SYSTEM"){
 					var total = labelArr[2];
 					$("#onlinecount").html("" + total);
@@ -192,13 +192,13 @@ $(document).ready(function(){
 						$(document).snowfall('clear');
 						window.clearTimeout(flowerTimer);
 					},5000);
-					
+
 				}
 				//有新的消息过来以后，自动切到最底部
 				CHAT.scrollToBottom();
 			};
-			
-			
+
+
 			if (!window.WebSocket) {
 			    window.WebSocket = window.MozWebSocket;
 			}

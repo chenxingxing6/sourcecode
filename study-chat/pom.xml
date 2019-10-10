@@ -23,6 +23,17 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.45</version>
         </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+
+        <!-- msgpack是一个高效的二进制序列化格式,就像JSON，但更快更小。-->
+        <dependency>
+            <groupId>org.msgpack</groupId>
+            <artifactId>msgpack</artifactId>
+            <version>0.6.12</version>
+        </dependency>
     </dependencies>
 
     <build>
