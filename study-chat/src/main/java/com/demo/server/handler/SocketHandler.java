@@ -19,14 +19,15 @@ public class SocketHandler extends SimpleChannelInboundHandler<IMMessage> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, IMMessage msg) throws Exception {
-        System.out.println("***");
+        System.out.println("Socket进行read");
+        LOG.info("Socket:read");
         processor.sendMsg(ctx.channel(), "[蓝星花]");
     }
 
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        LOG.info("服务端Handler创建...");
+        LOG.info("Socket创建...");
         super.handlerAdded(ctx);
     }
 

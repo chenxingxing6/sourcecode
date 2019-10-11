@@ -45,9 +45,9 @@ public class ChatServer {
                         protected void initChannel(SocketChannel socketChannel) {
                             ChannelPipeline pipeline = socketChannel.pipeline();
                             // 1.解析socket请求
-                            pipeline.addLast(new IMDecoder());
-                            pipeline.addLast(new IMEncoder());
-                            pipeline.addLast(new SocketHandler());
+                            // pipeline.addLast(new IMDecoder());
+                            // pipeline.addLast(new IMEncoder());
+                            // pipeline.addLast(new SocketHandler());
 
                             // 2.解析http请求
                             pipeline.addLast(new HttpServerCodec());
@@ -59,7 +59,9 @@ public class ChatServer {
 
                             // 3.解析websocket请求
                             pipeline.addLast(new WebSocketServerProtocolHandler("/myim"));
+                            pipeline.addLast(new IMEncoder());
                             pipeline.addLast(new WebSocketHandler());
+                            pipeline.addLast(new IMDecoder());
                         }
                     });
             ChannelFuture f = bootstrap.bind(port).sync();
