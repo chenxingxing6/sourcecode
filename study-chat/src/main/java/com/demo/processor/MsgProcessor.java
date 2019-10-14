@@ -91,6 +91,11 @@ public class MsgProcessor {
     }
 
 
+
+    public void sendMsg(Channel client,IMMessage msg){
+        sendMsg(client, encoder.encode(msg));
+    }
+
     /**
      * 发送消息
      * @param client
