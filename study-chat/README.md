@@ -12,6 +12,12 @@ MessagePack特点：
 > 1.实现解析http请求   
 > 2.实现解析websocket请求
 
+![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/study-chat/img/1.jpg)    
+
+
+![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/study-chat/img/2.jpg)    
+
+
 ```java
 package com.demo.server;
 
