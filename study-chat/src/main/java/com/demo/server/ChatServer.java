@@ -59,9 +59,9 @@ public class ChatServer {
 
                             // 3.解析websocket请求
                             pipeline.addLast(new WebSocketServerProtocolHandler("/myim"));
-                            pipeline.addLast(new IMEncoder());
+                            //pipeline.addLast(new IMEncoder());
                             pipeline.addLast(new WebSocketHandler());
-                            pipeline.addLast(new IMDecoder());
+                            //pipeline.addLast(new IMDecoder());
                         }
                     });
             ChannelFuture f = bootstrap.bind(port).sync();

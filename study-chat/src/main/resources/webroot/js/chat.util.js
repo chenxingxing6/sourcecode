@@ -22,6 +22,7 @@ Date.prototype.format = function(format){
 };
 
 $(document).ready(function(){
+	// localhost:8080/
 	var host = location.href.replace(/http:\/\//i,"");
 	window.CHAT = {
 		//保存服务器端WebSocket的请求地址
@@ -34,6 +35,7 @@ $(document).ready(function(){
 		scrollToBottom:function(){
 		    window.scrollTo(0, $("#onlinemsg")[0].scrollHeight);
 		},
+
 		//登录到聊天室
 		login:function(){
 			$("#error-msg").empty();
@@ -49,7 +51,7 @@ $(document).ready(function(){
                 $("#chatbox").show();
                 this.init(nickname);
             }else{
-            		$('#error-msg').html("先输入昵称才能进入聊天室");
+            	$('#error-msg').html("先输入昵称才能进入聊天室");
 	            return false;
             }
             return false;
@@ -123,13 +125,12 @@ $(document).ready(function(){
 			message.focus();
 			//按回车键自动发送
 			message.keydown(function(e){
-			    if ((e.ctrlKey && e.which == 13) || e.which == 10) {
+			    if (e.which == 13) {
 			    		CHAT.sendText();
 			    }
 			});
 
 			CHAT.nickname = nickname;
-
 			$("#shownikcname").html(nickname);
 
 
@@ -197,25 +198,23 @@ $(document).ready(function(){
 				//有新的消息过来以后，自动切到最底部
 				CHAT.scrollToBottom();
 			};
-
-
-			if (!window.WebSocket) {
-			    window.WebSocket = window.MozWebSocket;
-			}
-			if (window.WebSocket) {
-			    CHAT.socket = new WebSocket(CHAT.serverAddr);
-			    CHAT.socket.onmessage = function(e) {
-			    	appendToPanel(e.data);
-			    };
-			    CHAT.socket.onopen = function(e) {
-			    	CHAT.socket.send("[LOGIN][" + new Date().getTime() +"][" + nickname + "]");
-			    };
-			    CHAT.socket.onclose = function(e) {
-			        appendToPanel("[SYSTEM][" + new Date().getTime() + "][0] - 服务器关闭,暂不能聊天!");
-			    };
-			} else {
-			    alert("你的浏览器不支持 WebSocket！");
-			}
+            if (!window.WebSocket) {
+                window.WebSocket = window.MozWebSocket;
+            }
+            if (window.WebSocket) {
+                CHAT.socket = new WebSocket(CHAT.serverAddr);
+                CHAT.socket.onmessage = function(e) {
+                    appendToPanel(e.data);
+                };
+                CHAT.socket.onopen = function(e) {
+                    CHAT.socket.send("[LOGIN][" + new Date().getTime() +"][" + nickname + "]");
+                };
+                CHAT.socket.onclose = function(e) {
+                    appendToPanel("[SYSTEM][" + new Date().getTime() + "][0] - 服务器关闭,暂不能聊天!");
+                };
+            } else {
+                alert("你的浏览器不支持 WebSocket！");
+            }
 		}
 	};
 });
