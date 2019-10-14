@@ -6,7 +6,6 @@ import cn.hutool.log.level.Level;
 import com.demo.protocol.IMDecoder;
 import com.demo.protocol.IMEncoder;
 import com.demo.server.handler.HttpHandler;
-import com.demo.server.handler.SocketHandler;
 import com.demo.server.handler.WebSocketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -59,9 +58,9 @@ public class ChatServer {
 
                             // 3.解析websocket请求
                             pipeline.addLast(new WebSocketServerProtocolHandler("/myim"));
-                            //pipeline.addLast(new IMEncoder());
+                            pipeline.addLast(new IMEncoder());
                             pipeline.addLast(new WebSocketHandler());
-                            //pipeline.addLast(new IMDecoder());
+                            pipeline.addLast(new IMDecoder());
                         }
                     });
             ChannelFuture f = bootstrap.bind(port).sync();
