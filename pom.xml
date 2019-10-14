@@ -15,6 +15,7 @@
         <module>study-io</module>
         <module>study-chat</module>
         <module>code-netty-tomcat</module>
+        <module>code-netty</module>
     </modules>
 
     <dependencyManagement>
