@@ -18,7 +18,7 @@ public class Start {
         // 配置
         ServerBootstrap bootstrap = new ServerBootstrap(pool);
         // 绑定端口
-        //bootstrap.bind(new InetSocketAddress(8888));
+        bootstrap.bind(new InetSocketAddress(8888));
         System.out.println("server start......");
     }
 }
