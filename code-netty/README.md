@@ -38,4 +38,3 @@ SubReactorThread：
 写入响应数据；    
 
 
-https://github.com/leishiguang/netty-simplified
