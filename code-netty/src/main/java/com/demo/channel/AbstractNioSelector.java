@@ -109,11 +109,11 @@ public abstract class AbstractNioSelector implements Runnable {
         }
     }
 
-    protected abstract int select(Selector selector);
+    protected abstract int select(Selector selector) throws Exception;
 
     /**
      * selector业务处理
      * @param selector
      */
-    protected abstract void process(Selector selector);
+    protected abstract void process(Selector selector) throws Exception;
 }

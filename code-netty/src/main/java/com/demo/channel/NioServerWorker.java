@@ -1,5 +1,6 @@
 package com.demo.channel;
 
+import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.Executor;
 
@@ -11,6 +12,14 @@ import java.util.concurrent.Executor;
 public class NioServerWorker extends AbstractNioSelector implements IWorker {
     public NioServerWorker(Executor executor, String threadName, NioSelectorRunnablePool selectorRunnablePool) {
         super(executor, threadName, selectorRunnablePool);
+    }
+
+    protected int select(Selector selector) throws Exception{
+        return 0;
+    }
+
+    protected void process(Selector selector) throws Exception{
+
     }
 
     public void registerNewChannelTask(SocketChannel socketChannel) {
