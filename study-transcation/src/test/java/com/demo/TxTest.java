@@ -1,10 +1,4 @@
 package com.demo;
-
-import com.alibaba.fastjson.JSON;
-import com.demo.entity.Log;
-import com.demo.entity.User;
-import com.demo.service.ILogService;
-import com.demo.service.IUserService;
 import com.demo.txtest.ITxService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,4 +48,15 @@ public class TxTest {
     public void test06(){
         txService.txException_required_requiredExceptionTry();
     }
+
+    @Test
+    public void test07(){
+        txService.notx_notxMethod_txMethodException();
+    }
+    @Test
+    public void test08(){
+        txService.notx_notxMethod_txMethodException1();
+    }
+
+
 }

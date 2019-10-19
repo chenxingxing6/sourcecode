@@ -53,3 +53,29 @@ public interface ITxService {
 }
 
 ```
+内部方法调用，事务不起作用？
+```html
+public void notx_notxMethod_txMethodException() {
+    a();
+}
+public void a(){
+    userService.addRequired(user1);
+    this.b();
+}
+@Transactional
+public void b(){
+    userService.addRequired(user2);
+    throw new RuntimeException();
+}
+```
+
+AOP使用的是动态代理的机制，它会给类生成一个代理类，事务的相关操作都在代理类上完成。内部方式使用
+this.b调用方式时，使用的是实例调用，并没有通过代理类调用方法，所以会导致事务失效。
+
+解决办法
+> 1.引入自身bean,从而实现使用AOP代理操作  
+> 2.通过ApplicationContext引入bean  
+> 3.通过AopContext获取当前类的代理类  
+
+---
+

@@ -16,6 +16,9 @@ import javax.annotation.Resource;
 public class TxService implements ITxService {
     @Resource
     private IUserService userService;
+    @Resource
+    private TxService txService;
+
     private static User user1 = new User();
     private static User user2 = new User();
 
@@ -75,5 +78,34 @@ public class TxService implements ITxService {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    // 添加成功：user1，user2
+    public void notx_notxMethod_txMethodException() {
+        a();
+    }
+    public void a(){
+        userService.addRequired(user1);
+        b();
+    }
+    @Transactional
+    public void b(){
+        userService.addRequired(user2);
+        throw new RuntimeException();
+    }
+
+    // 添加成功：user1
+    public void notx_notxMethod_txMethodException1() {
+        a1();
+    }
+    public void a1(){
+        userService.addRequired(user1);
+        // 这是重点 txService需要注入进来，或者单独把spring事务service单独提取出来
+        txService.b1();
+    }
+    @Transactional
+    public void b1(){
+        userService.addRequired(user2);
+        throw new RuntimeException();
     }
 }

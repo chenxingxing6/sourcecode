@@ -36,4 +36,11 @@ public interface ITxService {
      * 6、外围有事务且有异常，里面有两个添加方法，外部插入成功，内部回滚
      */
     void txException_required_requiredExceptionTry();
+
+    /**
+     * 7.在一个类里面：没事务方法A调有事务方法B，B的事务会被忽略调
+     */
+    void notx_notxMethod_txMethodException();
+
+    void notx_notxMethod_txMethodException1();
 }
