@@ -16,6 +16,7 @@
         <module>study-chat</module>
         <module>code-netty-tomcat</module>
         <module>code-netty</module>
+        <module>study-transcation</module>
     </modules>
 
     <dependencyManagement>
