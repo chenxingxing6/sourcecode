@@ -36,7 +36,7 @@ public abstract class AbstractNioSelector implements Runnable {
     /**
      * 线程名
      */
-    private String threadName;
+    protected String threadName;
 
     /**
      * 线程管理
@@ -68,7 +68,7 @@ public abstract class AbstractNioSelector implements Runnable {
         while (true){
             System.out.println(this.threadName + "轮询....");
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.MILLISECONDS.sleep(100);
                 wakenUp.set(false);
                 select(this.selector);
                 runTask();

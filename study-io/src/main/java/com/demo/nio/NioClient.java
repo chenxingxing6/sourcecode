@@ -15,7 +15,7 @@ import java.util.Set;
  * @Date: 2019/10/6 11:44
  */
 public class NioClient {
-    private final InetSocketAddress address = new InetSocketAddress("localhost", 8080);
+    private final InetSocketAddress address = new InetSocketAddress("localhost", 8888);
     private Selector selector;
     private SocketChannel client;
     private final ByteBuffer sendBuffer=ByteBuffer.allocate(1024);

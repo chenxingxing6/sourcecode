@@ -11,14 +11,14 @@ import java.util.concurrent.Executors;
  * Date: 2019/10/17 09:48
  * Desc:
  */
-public class Start {
+public class ClientStart {
     public static void main(String[] args) {
         // 初始化线程
-        NioSelectorRunnablePool pool = new NioSelectorRunnablePool(Executors.newCachedThreadPool(), Executors.newCachedThreadPool());
+        NioSelectorRunnablePool pool = new NioSelectorRunnablePool(Executors.newCachedThreadPool());
         // 配置
         ServerBootstrap bootstrap = new ServerBootstrap(pool);
         // 绑定端口
-        bootstrap.bind(new InetSocketAddress(8888));
-        System.out.println("server start......");
+        bootstrap.connect("localhost", 8888);
+        System.out.println("client start......");
     }
 }
