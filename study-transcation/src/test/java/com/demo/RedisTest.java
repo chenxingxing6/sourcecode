@@ -1,6 +1,7 @@
 package com.demo;
 
 import com.demo.redis.RedisService;
+import com.demo.txtest.TxRedisService;
 import com.demo.util.LockEnum;
 import com.demo.util.LockUtil;
 import org.junit.Test;
@@ -11,6 +12,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,6 +30,9 @@ public class RedisTest {
     private LockUtil lockUtil;
     @Autowired
     private RedisService redisService;
+    @Autowired
+    private TxRedisService txRedisService;
+    private ExecutorService executorService = Executors.newCachedThreadPool();
 
     @Test
     public void test(){
@@ -76,11 +82,7 @@ public class RedisTest {
                 public void run() {
                     LockEnum lockEnum = LockEnum.TEST;
                     try {
-                        boolean result = lockUtil.lock(lockEnum, "mykey", false);
-                        System.out.println(result);
-                        if (!result){
-                            throw new RuntimeException("请问重复提交...");
-                        }
+                        lockUtil.lock(lockEnum, "mykey", true);
                         System.out.println("执行成功！");
                     }catch (Exception e){
                         e.printStackTrace();
@@ -89,6 +91,35 @@ public class RedisTest {
                     }
                 }
             }).start();
+        }
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * java中锁和事务同时使用，导致锁失效问题测试
+     */
+    @Test
+    public void test04(){
+        for (int i = 0; i < 10; i++) {
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    txRedisService.update("lxh");
+                }
+            });
+        }
+        sleep();
+    }
+
+    private void sleep(){
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        }catch (Exception e){
+            // ignore
         }
     }
 }
