@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * User: lanxinghua
@@ -21,20 +22,50 @@ import java.util.concurrent.TimeUnit;
 public class TxRedisService {
     @Autowired
     private LockUtil lockUtil;
+    @Autowired
+    private TxRedisService txRedisService;
+
+    Function BizException()
+
+    static <E extends Exception> void BizException(String a) throws E {
+        throw (E)e;
+    }
 
     @Transactional
     public void update(String key){
         boolean lock = lockUtil.lock(LockEnum.TEST, key, false);
         if (!lock){
-            throw new RuntimeException("当前人数过多，请稍后再试！");
+            throw new BizException("当前人数过多，请稍后再试！");
         }
         try {
             System.out.println("处理业务逻辑: " + key);
-            TimeUnit.SECONDS.sleep(1);
         }catch (Exception e){
             e.printStackTrace();
         }finally {
             lockUtil.unlock(LockEnum.TEST, key);
         }
+    }
+
+    /**
+     * 将锁粒度范围扩大
+     * @param key
+     */
+    public void updatev1(String key){
+        boolean lock = lockUtil.lock(LockEnum.TEST, key, false);
+        if (!lock){
+            throw new RuntimeException("当前人数过多，请稍后再试！");
+        }
+        try {
+            txRedisService.innerUpdate(key);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            lockUtil.unlock(LockEnum.TEST, key);
+        }
+    }
+
+    @Transactional
+    public void innerUpdate(String key){
+        System.out.println("处理业务逻辑: " + key);
     }
 }

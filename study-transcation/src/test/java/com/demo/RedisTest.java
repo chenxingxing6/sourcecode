@@ -115,6 +115,19 @@ public class RedisTest {
         sleep();
     }
 
+    @Test
+    public void test05(){
+        for (int i = 0; i < 10; i++) {
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    txRedisService.updatev1("lxh");
+                }
+            });
+        }
+        sleep();
+    }
+
     private void sleep(){
         try {
             TimeUnit.SECONDS.sleep(1);
