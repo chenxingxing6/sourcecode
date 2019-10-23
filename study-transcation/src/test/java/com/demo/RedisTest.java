@@ -1,8 +1,11 @@
 package com.demo;
 
-import com.demo.util.RedisLock;
+import com.demo.redis.RedisService;
+import com.demo.util.LockEnum;
+import com.demo.util.LockUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -21,7 +24,9 @@ public class RedisTest {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
     @Resource
-    private RedisLock redisLock;
+    private LockUtil lockUtil;
+    @Autowired
+    private RedisService redisService;
 
     @Test
     public void test(){
@@ -65,24 +70,25 @@ public class RedisTest {
     @Test
     public void test03(){
         for (int i = 0; i < 10; i++) {
-            new Thread(() -> {
-                a();
+            int finalI = i;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    LockEnum lockEnum = LockEnum.TEST;
+                    try {
+                        boolean result = lockUtil.lock(lockEnum, "mykey", false);
+                        System.out.println(result);
+                        if (!result){
+                            throw new RuntimeException("请问重复提交...");
+                        }
+                        System.out.println("执行成功！");
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }finally {
+                        lockUtil.unlock(lockEnum, "mykey");
+                    }
+                }
             }).start();
-        }
-    }
-
-    private void a(){
-        String lockKey = "key3";
-        if (redisLock.lock(lockKey)) {
-            System.out.println("获取锁成功");
-        }
-        try {
-            TimeUnit.SECONDS.sleep(4);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            redisLock.unlock(lockKey);
-            System.out.println("解锁成功");
         }
     }
 }

@@ -6,7 +6,7 @@ package com.demo.util;
  * Desc:
  */
 public enum LockEnum {
-    EXE_DO("testkey:", 60, "添加业态商品中，请稍后!")
+    TEST("testkey:", 60, "请稍后在操作!")
     ;
 
     /**
