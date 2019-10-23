@@ -25,17 +25,11 @@ public class TxRedisService {
     @Autowired
     private TxRedisService txRedisService;
 
-    Function BizException()
-
-    static <E extends Exception> void BizException(String a) throws E {
-        throw (E)e;
-    }
-
     @Transactional
     public void update(String key){
         boolean lock = lockUtil.lock(LockEnum.TEST, key, false);
         if (!lock){
-            throw new BizException("当前人数过多，请稍后再试！");
+            throw new RuntimeException("当前人数过多，请稍后再试！");
         }
         try {
             System.out.println("处理业务逻辑: " + key);
