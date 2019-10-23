@@ -12,6 +12,20 @@ public class RedisService {
 	@Autowired
     private JedisPool jedisPool;
 
+	public boolean setnx(KeyPrefix prefix, String key, String value){
+		Jedis jedis = null;
+		try {
+			jedis =  jedisPool.getResource();
+			Long result = jedis.setnx(prefix.getPrefix() + key, value);
+			if (result > 0){
+				return true;
+			}
+		}finally {
+			returnToPool(jedis);
+		}
+		return false;
+	}
+
 	/**
 	 * 获取当个对象
 	 * */
