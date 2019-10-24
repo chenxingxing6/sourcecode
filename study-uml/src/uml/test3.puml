@@ -1,0 +1,14 @@
+@startuml
+Alice->Bob : hello
+note left: 添加注释
+
+Bob->Alice : ok
+note right: 添加注释
+
+Bob->Bob : I am thinking
+note left
+	a note
+	can also be defined
+	on several lines
+end note
+@enduml
