@@ -10,6 +10,7 @@ CREATE TABLE `user1` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ```
 
+## 1.测试事务传播性   
 ---
 ```java
 package com.demo.txtest;
@@ -53,7 +54,10 @@ public interface ITxService {
 }
 
 ```
-内部方法调用，事务不起作用？
+---
+
+## 2.内部方法调用，事务不起作用？
+
 ```html
 public void notx_notxMethod_txMethodException() {
     a();
@@ -78,7 +82,7 @@ this.b调用方式时，使用的是实例调用，并没有通过代理类调�
 > 3.通过AopContext获取当前类的代理类  
 
 ---
-##### java中锁与@Transactional同时使用导致锁失效的问题
+## 3.java中锁与@Transactional同时使用导致锁失效的问题
 问题分析：
 > 由于spring aop会在update方法之前开启事务，之后再加锁，当锁住代码后执行完后再提交事务：finally方法运行完，
 删除key后，事务还未提交。导致其他线程进行代码块，读取的数据不是最新的。
@@ -177,7 +181,9 @@ this.b调用方式时，使用的是实例调用，并没有通过代理类调�
   	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)   
   	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)   
   	at java.lang.Thread.run(Thread.java:748)   
-  处理业务逻辑: lxh    
+  处理业务逻辑: lxh   
+    
+--- 
   
   
 
