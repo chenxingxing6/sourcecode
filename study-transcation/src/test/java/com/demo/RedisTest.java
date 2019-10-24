@@ -6,14 +6,11 @@ import com.demo.util.LockEnum;
 import com.demo.util.LockUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,11 +25,6 @@ public class RedisTest {
     private StringRedisTemplate stringRedisTemplate;
     @Resource
     private LockUtil lockUtil;
-    @Autowired
-    private RedisService redisService;
-    @Autowired
-    private TxRedisService txRedisService;
-    private ExecutorService executorService = Executors.newCachedThreadPool();
 
     @Test
     public void test(){
@@ -96,43 +88,6 @@ public class RedisTest {
             TimeUnit.SECONDS.sleep(5);
         }catch (Exception e){
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * java中锁和事务同时使用，导致锁失效问题测试
-     */
-    @Test
-    public void test04(){
-        for (int i = 0; i < 10; i++) {
-            executorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    txRedisService.update("lxh");
-                }
-            });
-        }
-        sleep();
-    }
-
-    @Test
-    public void test05(){
-        for (int i = 0; i < 10; i++) {
-            executorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    txRedisService.updatev1("lxh");
-                }
-            });
-        }
-        sleep();
-    }
-
-    private void sleep(){
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        }catch (Exception e){
-            // ignore
         }
     }
 }
