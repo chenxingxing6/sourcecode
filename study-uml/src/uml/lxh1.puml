@@ -1,0 +1,20 @@
+@startuml
+掌柜审核H5 -> mis as "mis-center": 1.网关接口
+mis -> mis : 2.判断时间临界点
+alt time < 临界点时间
+    mis -> matrix as "matrix-soa": 3.获取系统数据
+    note right
+      实收额
+      订单数量
+    end note
+    matrix -> mis : 4.返回结果
+else time >= 临界点时间
+    mis -> matrix as "matrix-soa": 5.获取系统数据
+    note right
+     营业额
+     订单数量
+    end note
+    matrix -> mis : 6.返回结果
+end
+mis -> 掌柜审核H5 : 7. 返回结果
+@enduml

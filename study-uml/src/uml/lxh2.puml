@@ -1,0 +1,23 @@
+@startuml
+掌柜 -> api as "boss-api": 1.获取首页数据
+api -> api : 2.判断商圈是否使用ERP
+alt 不使用ERP
+    api -> api:
+    note right
+      功能不变
+    end note
+else 使用ERP
+    api -> mis as "mis-center-soa": 3.获取数据
+    mis -> shop as "shop-soa" : 4.获取店铺（时间范围+mallId）
+    shop -> mis: 5.返回店铺列表
+    mis -> mis: 6.获取过滤后的店铺
+    note right
+       1.用户可管理的【楼层+业态】
+       2.不是统收台店铺
+    end note
+    mis -> data as "data-lake-soa": 7.获取数据【H+1,T+1】
+    data -> mis: 8.返回数据
+    mis -> api: 9.返回数据
+end
+api -> 掌柜 : 10. 返回结果
+@enduml
