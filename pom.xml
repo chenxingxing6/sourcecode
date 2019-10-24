@@ -17,6 +17,7 @@
         <module>code-netty-tomcat</module>
         <module>code-netty</module>
         <module>study-transcation</module>
+        <module>study-uml</module>
     </modules>
 
     <dependencyManagement>

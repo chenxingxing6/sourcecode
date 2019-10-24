@@ -1,0 +1,22 @@
+@startuml
+H5 -> wx as "weixin": 1./v1/coupon/fetch
+wx -> wx : 2.是否是商圈
+alt 不是商圈
+    wx -> cs as "xx-soa": 3.领取优惠券
+    cs -> mc as "xx-center": 4.领取优惠券
+    mc -> cs : 5.返回结果
+    cs -> wx : 6. 返回结果
+else 是商圈
+    wx -> ap as "xx-platform": 7.是否为商圈会员
+    ap -> ap: 8.判断是否为商圈会员
+    alt 不是会员
+        ap -> wx : 9.返回结果，需要先加入会员
+    else 是会员
+       wx -> cs as "xx-soa": 10.领取优惠券
+       cs -> mc as "xx-center": 11.领取优惠券
+           mc -> cs : 12.返回结果
+           cs -> wx : 13. 返回结果
+    end
+end
+wx -> H5 : 14. 返回结果
+@enduml

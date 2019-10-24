@@ -1,0 +1,12 @@
+@startuml
+
+"APP（商场）" -> 网关: 审核数据
+网关 -> "mis-center-soa": 审核
+"mis-center-soa" -> "matrix-soa": 取系统数据
+"matrix-soa" --> "mis-center-soa": return
+"mis-center-soa" --> "mis-center-soa": 系统数据和上报数据比较，取高值
+"mis-center-soa" --> "网关": 审核成功
+网关 --> "APP（商场）": return
+title: 销售数据审核
+
+@enduml
