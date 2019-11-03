@@ -8,7 +8,7 @@
 #### 实现思路
 识别指令，然后通过反射机制，找到对于处理类进行处理。最后将结果依照协议序列化为字节流写到客户端。
 
-![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-redis/img/1.png)
+![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-redis/img/1.jpg)
 
 ---
 #### 测试
