@@ -18,6 +18,8 @@
         <module>code-netty</module>
         <module>study-transcation</module>
         <module>study-uml</module>
+        <module>code-redis</module>
+        <module>study-cache</module>
     </modules>
 
     <dependencyManagement>
