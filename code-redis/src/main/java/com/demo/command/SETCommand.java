@@ -1,7 +1,6 @@
 package com.demo.command;
 
 import com.demo.data.DbData;
-import com.demo.data.PermanentData;
 import com.demo.procotol.Protocolcode;
 
 import java.io.OutputStream;
@@ -9,29 +8,29 @@ import java.util.List;
 
 /**
  * @Author: cxx
- * @Date: 2019/11/3 19:51
+ * @Date: 2019/11/3 22:30
  */
-public class LPOPCommand implements ICommand{
+public class SETCommand implements ICommand {
     DbData dbData = DbData.getDatabase();
     List<Object> args;
 
     @Override
     public void run(OutputStream out) {
-        if (args.size() == 1) {
-            String key = new String((byte[]) args.get(0));
+        if (args.size() == 2){
+            String key = new String((byte[]) args.remove(0));
+            String value = new String((byte[]) args.remove(0));
+            String v = dbData.str.get(key);
+            dbData.str.put(key, value);
             try {
-                if (dbData.getList(key).isEmpty()){
-                    Protocolcode.writeBulkString(out,"");
-                    return;
+                if (v == null){
+                    Protocolcode.writeInteger(out, 1);
+                }else {
+                    Protocolcode.writeInteger(out, 0);
                 }
-                String value=dbData.getList(key).remove(0);
-                Protocolcode.writeBulkString(out,value);
-                PermanentData.getInstance().clearListProfile();
-                PermanentData.getInstance().writetoListProfile();
-            } catch (Exception e) {
+            }catch (Exception e){
                 e.printStackTrace();
             }
-        } else {
+        }else {
             try {
                 Protocolcode.writeError(out, "Wrong Format");
             } catch (Exception e) {

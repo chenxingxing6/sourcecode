@@ -7,7 +7,7 @@ import java.util.List;
  * @Author: cxx
  * @Date: 2019/11/3 19:51
  */
-public class ExitCommand implements ICommand {
+public class EXITCommand implements ICommand {
     public List<Object> args;
 
     public void run(OutputStream out) {

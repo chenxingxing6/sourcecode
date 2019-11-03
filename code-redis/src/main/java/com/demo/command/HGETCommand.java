@@ -1,37 +1,33 @@
 package com.demo.command;
 
 import com.demo.data.DbData;
-import com.demo.data.PermanentData;
 import com.demo.procotol.Protocolcode;
 
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * @Author: cxx
- * @Date: 2019/11/3 19:51
+ * @Date: 2019/11/3 19:53
  */
-public class LPOPCommand implements ICommand{
+public class HGETCommand implements ICommand{
     DbData dbData = DbData.getDatabase();
     List<Object> args;
 
     @Override
     public void run(OutputStream out) {
-        if (args.size() == 1) {
-            String key = new String((byte[]) args.get(0));
+        if (args.size() == 2){
+            String key = new String((byte[]) args.remove(0));
+            String field = new String((byte[]) args.remove(0));
+            HashMap<String, String> map = dbData.getDatabase().getHash(key);
+            String value = map.get(field);
             try {
-                if (dbData.getList(key).isEmpty()){
-                    Protocolcode.writeBulkString(out,"");
-                    return;
-                }
-                String value=dbData.getList(key).remove(0);
-                Protocolcode.writeBulkString(out,value);
-                PermanentData.getInstance().clearListProfile();
-                PermanentData.getInstance().writetoListProfile();
+                Protocolcode.writeBulkString(out, value);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
+        }else {
             try {
                 Protocolcode.writeError(out, "Wrong Format");
             } catch (Exception e) {

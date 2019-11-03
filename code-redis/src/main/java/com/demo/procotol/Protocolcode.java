@@ -25,9 +25,12 @@ public class Protocolcode {
         write.flush();
     }
 
-    //  '$6\r\nfoobar\r\n' 或者 '$-1\r\n'
+    //字节流'$6\r\nfoobar\r\n' 或者 '$-1\r\n'
     public static void writeBulkString(OutputStream write, String str) throws Exception {
-        byte[] b = str.getBytes();
+        byte[] b = new byte[0];
+        if (str != null){
+            b = str.getBytes();
+        }
         write.write('$');
         write.write(String.valueOf(b.length).getBytes());
         write.write("\r\n".getBytes());

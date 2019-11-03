@@ -9,32 +9,27 @@ import java.util.List;
 
 /**
  * @Author: cxx
- * @Date: 2019/11/3 19:51
+ * @Date: 2019/11/3 22:30
  */
-public class LPOPCommand implements ICommand{
+public class GETCommand implements ICommand {
     DbData dbData = DbData.getDatabase();
     List<Object> args;
 
     @Override
     public void run(OutputStream out) {
-        if (args.size() == 1) {
-            String key = new String((byte[]) args.get(0));
+        if (args.size() == 1){
+            String key = new String((byte[]) args.remove(0));
             try {
-                if (dbData.getList(key).isEmpty()){
-                    Protocolcode.writeBulkString(out,"");
-                    return;
-                }
-                String value=dbData.getList(key).remove(0);
+                String value = dbData.str.remove(key);
                 Protocolcode.writeBulkString(out,value);
-                PermanentData.getInstance().clearListProfile();
-                PermanentData.getInstance().writetoListProfile();
-            } catch (Exception e) {
+                // TODO: 2019/11/3  持久化到文件里
+            }catch (Exception e){
                 e.printStackTrace();
             }
-        } else {
+        }else {
             try {
                 Protocolcode.writeError(out, "Wrong Format");
-            } catch (Exception e) {
+            }catch (Exception e){
                 e.printStackTrace();
             }
         }

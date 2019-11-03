@@ -54,6 +54,10 @@ public class MyDecode {
             command.setArgs(list);
             return command;
         }catch (Exception e){
+            try {
+                Protocolcode.writeError(os, "Wrong Input,Please try again");
+            }catch (Exception e1){
+            }
             e.printStackTrace();
         }
         return null;
