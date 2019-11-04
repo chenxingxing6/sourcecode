@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Date: 2019/11/4 15:25
  * Desc:
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.demo")
 public class RedisApplication {
     public static void main(String[] args) {
         SpringApplication.run(RedisApplication.class);

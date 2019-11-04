@@ -1,18 +1,12 @@
-import com.alibaba.fastjson.JSON;
 import com.demo.RedisApplication;
-import com.demo.redis.RedisService;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.demo.p2p.Consumer;
+import com.demo.p2p.Producer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * User: lanxinghua
@@ -23,49 +17,26 @@ import java.util.Date;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RedisApplication.class)
 public class RedisQueueTest {
-    public static String redisKey = "redisqueue";
-    public static int msgSize = 10000;
-
     @Resource
-    private RedisService redisService;
+    private Producer producer;
+    @Resource
+    private Consumer consumer;
 
     @Test
     public void test(){
-        init();
+        push();
         System.out.println("1万条消息生产完成.....");
         pop();
+        System.out.println("1万条消息消费完成.....");
     }
 
     // 1万消息,消息队列的生产者
-    private void init(){
-        for (int i = 1; i <= msgSize; i++) {
-            String body = "{key:"+ i +"}";
-            Message message = new Message("" +i, "topic", "tag", "053a842ce01e4c5d9295b064634a268b", new Date(), body);
-            redisService.lpush(redisKey, JSON.toJSONString(message));
-        }
+    private void push(){
+        producer.producer();
     }
 
     // 1万消息,消息队列的消费者
     private void pop(){
-        for (int i = 0; i < msgSize; i++) {
-            String str = redisService.rpop(redisKey);
-            Message message = JSON.parseObject(str, Message.class);
-            if (message != null){
-                System.out.println("msgId:" + message.getMsgId() + JSON.toJSONString(message));
-            }
-        }
-    }
-
-    @Setter
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    static class Message implements Serializable{
-        private String msgId;
-        private String topic;
-        private String tag;
-        private String key;
-        private Date storeTime;
-        private String msgBody;
+        consumer.consumer();
     }
 }
