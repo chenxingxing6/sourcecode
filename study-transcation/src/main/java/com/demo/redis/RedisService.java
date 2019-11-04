@@ -154,6 +154,53 @@ public class RedisService {
 	}
 
 	/**
+	 * 存储redis队列，顺序存储
+	 * @param key
+	 * @param value
+	 */
+	public void lpush(byte[] key, byte[] value){
+		Jedis jedis = null;
+		try {
+			jedis =  jedisPool.getResource();
+			jedis.lpush(key, value);
+		}finally {
+			returnToPool(jedis);
+		}
+	}
+
+	/**
+	 * 存储redis队列,反向存储
+	 * @param key
+	 * @param value
+	 */
+	public void rpush(byte[] key, byte[] value){
+		Jedis jedis = null;
+		try {
+			jedis =  jedisPool.getResource();
+			jedis.rpush(key, value);
+		}finally {
+			returnToPool(jedis);
+		}
+	}
+
+	/**
+	 * 获取队列数据
+	 * @param key
+	 * @param value
+	 */
+	public byte[] rpop(byte[] key){
+		Jedis jedis = null;
+		try {
+			jedis =  jedisPool.getResource();
+			return jedis.rpop(key);
+		}finally {
+			returnToPool(jedis);
+		}
+	}
+
+
+
+	/**
 	 * bean 转 String
 	 * @param value
 	 * @param <T>
