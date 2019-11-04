@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPubSub;
 
 @Service
 public class RedisService {
@@ -186,7 +187,6 @@ public class RedisService {
 	/**
 	 * 获取队列数据
 	 * @param key
-	 * @param value
 	 */
 	public String rpop(String key){
 		Jedis jedis = null;
@@ -198,6 +198,35 @@ public class RedisService {
 		}
 	}
 
+	/**
+	 * 发布消息
+	 * @param channel
+	 * @param msg
+	 */
+	public void publish(String channel, String msg){
+		Jedis jedis = null;
+		try {
+			jedis =  jedisPool.getResource();
+			jedis.publish(channel, msg);
+		}finally {
+			returnToPool(jedis);
+		}
+	}
+
+	/**
+	 * 订阅消息
+	 * @param jedisPubSub
+	 * @param channel
+	 */
+	public void subscribe(JedisPubSub jedisPubSub, String channel){
+		Jedis jedis = null;
+		try {
+			jedis =  jedisPool.getResource();
+			jedis.subscribe(jedisPubSub, channel);
+		}finally {
+			returnToPool(jedis);
+		}
+	}
 
 
 	/**
