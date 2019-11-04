@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: cxx
@@ -29,6 +30,7 @@ public class MyRedisService {
         try {
             // 循环接受客户端连接
             serverSocket = new ServerSocket(port);
+            System.out.println("等待客户端连接....");
             while (true){
                 final Socket socket = serverSocket.accept();
                 executor.execute(() -> {
@@ -42,14 +44,22 @@ public class MyRedisService {
                             if (command != null){
                                 command.run(os);
                             }
+                            TimeUnit.MILLISECONDS.sleep(10);
                         }
                     }catch (Exception e){
-                        e.printStackTrace();
+                        try {
+                            socket.close();
+                        }catch (Exception e1){
+                        }
                     }
                 });
             }
         }catch (Exception e){
-            e.printStackTrace();
+            try {
+                serverSocket.close();
+            }catch (Exception e1){
+
+            }
         }
     }
 

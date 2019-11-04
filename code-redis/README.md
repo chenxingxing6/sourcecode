@@ -1,5 +1,5 @@
 ## 使用Java实现简易版Redis服务器
-####redis
+#### redis
 > Redis是一个开源的使用ANSI C语言编写、遵守BSD协议、支持网络、可基于内存亦可持久化的日志型、
 key-value数据库。它通常被称为数据结构服务器，因为值（value）可以是字符串（String），哈希
 （Hash），列表（List），集合（Set）和有序集合（sorted Set）等类型。
@@ -89,7 +89,7 @@ import redis.clients.jedis.Jedis;
  * @Author: cxx
  * @Date: 2019/11/3 23:28
  */
-public class JedisTest {
+public class com.demo.JedisTest {
     public static void main(String[] args) {
         Jedis jedis=new Jedis("localhost", 6379);
         String result = jedis.ping();
@@ -108,7 +108,7 @@ Exception in thread "main" redis.clients.jedis.exceptions.JedisConnectionExcepti
 	at redis.clients.jedis.Connection.sendCommand(Connection.java:121)
 	at redis.clients.jedis.BinaryClient.ping(BinaryClient.java:106)
 	at redis.clients.jedis.BinaryJedis.ping(BinaryJedis.java:195)
-	at JedisTest.main(JedisTest.java:10)
+	at com.demo.JedisTest.main(com.demo.JedisTest.java:10)
 Caused by: java.net.SocketTimeoutException: connect timed out
 	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
 	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)

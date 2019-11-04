@@ -23,9 +23,9 @@ public class SETCommand implements ICommand {
             dbData.str.put(key, value);
             try {
                 if (v == null){
-                    Protocolcode.writeInteger(out, 1);
+                    Protocolcode.writeInteger(out, 1L);
                 }else {
-                    Protocolcode.writeInteger(out, 0);
+                    Protocolcode.writeInteger(out, 0L);
                 }
             }catch (Exception e){
                 e.printStackTrace();

@@ -62,5 +62,7 @@ public class Protocolcode {
         write.write('-');
         write.write(message.getBytes());
         write.write("\r\n".getBytes());
+        write.flush();
+        write.close();
     }
 }

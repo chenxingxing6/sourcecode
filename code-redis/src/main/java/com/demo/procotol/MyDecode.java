@@ -58,7 +58,6 @@ public class MyDecode {
                 Protocolcode.writeError(os, "Wrong Input,Please try again");
             }catch (Exception e1){
             }
-            e.printStackTrace();
         }
         return null;
     }
@@ -113,7 +112,6 @@ public class MyDecode {
         try {
             b = is.read();
         } catch (IOException e) {
-            e.printStackTrace();
         }
         if (b == -1) {
             throw new RuntimeException("程序错误..........");
