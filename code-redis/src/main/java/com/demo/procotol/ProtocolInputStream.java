@@ -6,6 +6,7 @@ import java.io.InputStream;
 /**
  * @Author: cxx
  * @Date: 2019/11/3 20:09
+ * 每个Redis命令或者数据都以\r\n结尾。
  */
 public class ProtocolInputStream {
     private InputStream is;

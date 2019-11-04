@@ -27,10 +27,12 @@ public class MyDecode {
     public ICommand getCommand(){
         try {
             Object o = process();
+            // 客户端将命令作为批量字符串的RESP数组发送到Redis服务器,如果解析出不是list就有问题了
             if (!(o instanceof List)){
                 Protocolcode.writeBulkString(os, "Server too tired,please wait .....");
                 throw new RedisException("内部解析错误，服务器故障");
             }
+
             List<Object> list = (List<Object>) o;
             if (list.size() < 1) {
                 Protocolcode.writeBulkString(os, "Server too tired,please wait .....");
@@ -43,6 +45,7 @@ public class MyDecode {
             }
             String commandName = String.format("%sCommand", new String((byte[]) (o2)).trim().toUpperCase());
             System.out.println("执行命令：" + commandName);
+
             Class<?> cls = null;
             ICommand command = null;
             cls = Class.forName("com.demo.command." + commandName);
@@ -110,12 +113,15 @@ public class MyDecode {
     public Object process() throws IOException {
         int b = 0;
         try {
+            // 从输入流中读取数据的下一个字节，没可用字节返回-1
             b = is.read();
         } catch (IOException e) {
         }
         if (b == -1) {
             throw new RuntimeException("程序错误..........");
         }
+
+        // 数据类型取决于第一个字节,redis resp通信协议规定
         switch ((char) b) {
             case '+':
                 return processSimpleString();
