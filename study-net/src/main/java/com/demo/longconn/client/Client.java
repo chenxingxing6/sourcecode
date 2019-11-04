@@ -40,7 +40,7 @@ public class Client {
             lastSendTime = System.currentTimeMillis();
             new Thread(new KeepAliveWatchDog()).start();
             // 接受消息的线程，处理消息
-            new Thread(new ReceiveWatchDog()).start();
+            // new Thread(new ReceiveWatchDog()).start();
         }catch (Exception e){
             e.printStackTrace();
             stop();
@@ -72,6 +72,20 @@ public class Client {
                         oos.writeObject(new KeepAlive(name));
                         oos.flush();
                         lastSendTime = System.currentTimeMillis();
+
+                        // 假设客户端宕机
+                        if ("客户端3".equals(name)){
+                            System.out.println(name + "出现故障，将在1s后宕机");
+                            TimeUnit.SECONDS.sleep(1);
+                            stop();
+                        }
+
+                        if ("客户端2".equals(name)){
+                            System.out.println(name + "出现故障，将在2s后宕机");
+                            TimeUnit.SECONDS.sleep(2);
+                            stop();
+                        }
+
                     }catch (Exception e){
                         e.printStackTrace();
                         stop();

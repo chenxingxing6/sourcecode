@@ -31,46 +31,6 @@ public class Server {
     private static Map<String/*clientName*/, ClientState> map = new HashMap<String, ClientState>(10);
     private Object lock = new Object();
 
-    class ClientState{
-        private int isValid = 0;
-        private String clientName;
-        private long lastReTime;
-
-        public int getIsValid() {
-            return isValid;
-        }
-
-        public void setIsValid(int isValid) {
-            this.isValid = isValid;
-        }
-
-        public String getClientName() {
-            return clientName;
-        }
-
-        public void setClientName(String clientName) {
-            this.clientName = clientName;
-        }
-
-        public long getLastReTime() {
-            return lastReTime;
-        }
-
-        public void setLastReTime(long lastReTime) {
-            this.lastReTime = lastReTime;
-        }
-
-        @Override
-        public String toString() {
-            return "ClientState{" +
-                    "isValid=" + isValid +
-                    ", clientName='" + clientName + '\'' +
-                    ", lastReTime=" + lastReTime +
-                    '}';
-        }
-    }
-
-
     public Server(int port) {
         this.port = port;
     }
@@ -93,6 +53,9 @@ public class Server {
         if (isConn) isConn = false;
     }
 
+    /**
+     * 连接监控
+     */
     class ConnectWatchDog implements Runnable{
         public void run() {
             try {
@@ -109,6 +72,48 @@ public class Server {
         }
     }
 
+    /**
+     * 监控客户端宕机的机器
+     */
+    class CleanScan implements Runnable{
+        public void run() {
+            while (true) {
+                synchronized (lock) {
+                    if (map.isEmpty()) {
+                        return;
+                    }
+                    for (Map.Entry<String, ClientState> client : map.entrySet()) {
+                        ClientState clientState = client.getValue();
+                        if (clientState == null) {
+                            map.remove(client.getKey());
+                            return;
+                        }
+                        if (clientState.getIsValid() == 0) {
+                            continue;
+                        }
+                        if (System.currentTimeMillis() - clientState.getLastReTime() > receiveTimeDelay) {
+                            clientState.setIsValid(0);
+                            System.out.println("有效客户端" + getAliveClientCount() +  " 客户端宕机" + clientState.toString());
+                        }
+                    }
+                }
+                try {
+                    TimeUnit.SECONDS.sleep(3);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        /**
+         * 获取有效客户端数量
+         * @return
+         */
+        private long getAliveClientCount(){
+            return map.values().stream().filter(e -> e.getIsValid() == 1).count();
+        }
+    }
+
     class SocketAction implements Runnable{
         boolean isRun = true;
         Socket s;
@@ -122,8 +127,9 @@ public class Server {
         public void run() {
             try {
                 while (isConn && isRun){
+                    new Thread(new CleanScan()).start();
+
                     if (System.currentTimeMillis() - lastReceiveTime > receiveTimeDelay){
-                        new Thread(new CleanScan()).start();
                         close();
                     }else {
                         InputStream in = s.getInputStream();
@@ -133,15 +139,12 @@ public class Server {
                             lastReceiveTime = System.currentTimeMillis();
                             if (o instanceof KeepAlive){
                                 KeepAlive alive = (KeepAlive) o;
-                                System.out.println(alive.getClientName() + "心跳检查ok：" + o.toString());
+                                System.out.println("客户端数量：" + getAliveClientCount() + " "+alive.getClientName() + "  心跳检查ok：" + o.toString());
                                 clientState.setClientName(alive.getClientName());
                                 clientState.setIsValid(1);
                                 clientState.setLastReTime(lastReceiveTime);
                                 map.put(alive.getClientName(), clientState);
                             }
-                            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-                            oos.writeObject("ok");
-                            oos.flush();
                         }else {
                             TimeUnit.MILLISECONDS.sleep(10);
                         }
@@ -153,29 +156,8 @@ public class Server {
             }
         }
 
-        // 清除宕机的机器
-        class CleanScan implements Runnable{
-            public void run() {
-                synchronized (lock){
-                    if (map.isEmpty()){
-                        return;
-                    }
-                    for (Map.Entry<String, ClientState> client : map.entrySet()) {
-                        ClientState clientState = client.getValue();
-                        if (clientState == null){
-                            map.remove(client.getKey());
-                            return;
-                        }
-                        if (clientState.getIsValid() == 0){
-                            continue;
-                        }
-                        if (System.currentTimeMillis() - clientState.getLastReTime() > receiveTimeDelay){
-                            System.out.println("客户端宕机" + clientState.toString());
-                            clientState.setIsValid(0);
-                        }
-                    }
-                }
-            }
+        private long getAliveClientCount(){
+            return map.values().stream().filter(e -> e.getIsValid() == 1).count();
         }
 
         private void close(){
@@ -189,6 +171,4 @@ public class Server {
             }
         }
     }
-
-
 }
