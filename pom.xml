@@ -20,6 +20,7 @@
         <module>study-uml</module>
         <module>code-redis</module>
         <module>study-cache</module>
+        <module>study-redis</module>
     </modules>
 
     <dependencyManagement>
