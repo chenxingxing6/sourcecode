@@ -39,7 +39,13 @@ Redis在TCP端口6379上监听到来的连接（本质就是socket），客户�
 
 ---
 #### redis客户端测试   
-软件自己去下载：   
+软件自己去下载: 
+> 1.下载wget http://download.redis.io/redis-stable.tar.gz  
+> 2.解压，编译 cd redis-stable; make;  
+> 3.cd src/ 可以看到新生成redis-cli,redis-server  
+> 4.启动服务 redis-cli  
+
+ 
 ![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-redis/img/9.png)    
 
 
