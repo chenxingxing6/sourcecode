@@ -158,7 +158,7 @@ public class RedisService {
 	 * @param key
 	 * @param value
 	 */
-	public void lpush(byte[] key, byte[] value){
+	public void lpush(String key, String value){
 		Jedis jedis = null;
 		try {
 			jedis =  jedisPool.getResource();
@@ -173,7 +173,7 @@ public class RedisService {
 	 * @param key
 	 * @param value
 	 */
-	public void rpush(byte[] key, byte[] value){
+	public void rpush(String key, String value){
 		Jedis jedis = null;
 		try {
 			jedis =  jedisPool.getResource();
@@ -188,7 +188,7 @@ public class RedisService {
 	 * @param key
 	 * @param value
 	 */
-	public byte[] rpop(byte[] key){
+	public String rpop(String key){
 		Jedis jedis = null;
 		try {
 			jedis =  jedisPool.getResource();
