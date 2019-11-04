@@ -16,7 +16,25 @@ key-value数据库。它通常被称为数据结构服务器，因为值（value
 2.然后通过反射机制，找到对于处理类进行处理。
 3.最后将结果依照协议序列化为字节流写到客户端。
 
-Redis的BSD协议   
+Redis的RESP通信协议描述（二进制）    
+> RESP实际上是一个支持以下数据类型的序列化协议：简单字符串（Simple Strings），错误（Errors），整数（Integers），  
+块字符串（Bulk Strings）和数组（Arrays）。
+
+在Redis中,RESP用作 请求-响应 协议的方式如下：
+> 1、客户端将命令作为批量字符串的RESP数组发送到Redis服务器。     
+  2、服务器（Server）根据命令执行的情况返回一个具体的RESP类型作为回复。
+  
+在RESP协议中，有些的数据类型取决于第一个字节：
+> 1、对于简单字符串，回复的第一个字节是“+”  
+  2、对于错误，回复的第一个字节是“ - ”  
+  3、对于整数，回复的第一个字节是“：”  
+  4、对于批量字符串，回复的第一个字节是“$”  
+  5、对于数组，回复的第一个字节是“*”  
+
+Redis在TCP端口6379上监听到来的连接（本质就是socket），客户端连接到来时，Redis服务器为此创建一个TCP连接。在客户端
+与服务器端之间传输的每个Redis命令或者数据都以\r\n结尾。
+
+
 ![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-redis/img/1.jpg)
 
 ---
