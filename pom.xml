@@ -21,6 +21,7 @@
         <module>code-redis</module>
         <module>study-cache</module>
         <module>study-redis</module>
+        <module>study-net</module>
     </modules>
 
     <dependencyManagement>
