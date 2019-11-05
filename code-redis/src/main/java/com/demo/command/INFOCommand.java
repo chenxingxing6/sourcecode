@@ -10,14 +10,17 @@ import java.util.List;
  * @Author: cxx
  * @Date: 2019/11/3 23:06
  */
-public class PINGCommand implements ICommand {
+public class INFOCommand implements ICommand {
     private List<Object> args;
     private DbData dbData = DbData.getDatabase();
 
     @Override
     public void run(OutputStream out) {
         try {
-            Protocolcode.writeString(out, "PONG");
+            out.write('+');
+            out.write("# Server".getBytes());
+            out.write("\r\n".getBytes());
+            out.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -20,7 +20,7 @@ public class Protocolcode {
     //'+OK\r\n'
     public static void writeString(OutputStream write, String str) throws Exception {
         write.write('+');
-        write.write("OK".getBytes());
+        write.write(str.getBytes());
         write.write("\r\n".getBytes());
         write.flush();
     }
