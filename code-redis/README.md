@@ -48,12 +48,14 @@ Redis在TCP端口6379上监听到来的连接（本质就是socket），客户�
  
 ![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-redis/img/9.png)    
 
+  
 
-1.检测 redis 服务是否启动
+---
+1.检测 redis 服务是否启动    
 ![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-redis/img/2.png)    
 
-
-2.字符串(String)    
+ 
+2.字符串(String)       
 ![avatar](https://raw.githubusercontent.com/chenxingxing6/sourcecode/master/code-redis/img/3.png)    
 
 3.哈希(Hash)    
