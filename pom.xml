@@ -22,6 +22,7 @@
         <module>study-cache</module>
         <module>study-redis</module>
         <module>study-net</module>
+        <module>study-zk</module>
     </modules>
 
     <dependencyManagement>
