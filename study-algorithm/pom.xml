@@ -11,5 +11,11 @@
 
     <artifactId>study-algorithm</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
