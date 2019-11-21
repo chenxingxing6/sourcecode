@@ -23,7 +23,8 @@
         <module>study-redis</module>
         <module>study-net</module>
         <module>study-zk</module>
-        <module>studyal-gorithm</module>
+        <module>study-algorithm</module>
+        <module>study-other</module>
     </modules>
 
     <dependencyManagement>
