@@ -10,6 +10,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>study-net</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.6</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>

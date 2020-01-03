@@ -1,0 +1,14 @@
+
+
+
+@startuml
+支付宝小程序 -> weixin as "weixin-meal": 1.上传用户信息 /ma/up_user_info/alipay/mallperson/{code}
+weixin -> oauth as "oauth-api": : 2.上传用户信息
+oauth -> 支付宝开发平台 : 3.获取支付宝用户信息
+支付宝开发平台 -> oauth : 4.返回用户信息
+oauth -> weixin : 4. 返回结果
+weixin -> 支付宝小程序 : 5. 返回结果
+@enduml
+
+
+

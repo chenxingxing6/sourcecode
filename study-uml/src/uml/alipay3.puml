@@ -1,0 +1,14 @@
+
+
+
+@startuml
+二维码 -> weixin as "weixin-meal": 1.商户扫码授权
+weixin -> oauth as "oauth-api": : 2.扫码授权
+oauth ->  third as "third-internal-soa" : 3.保存授权信息
+third -> oauth : 4.返回结果
+oauth -> weixin : 5. 返回结果
+weixin -> 二维码 : 6. 返回结果
+@enduml
+
+
+

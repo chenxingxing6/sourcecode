@@ -1,0 +1,15 @@
+
+
+
+@startuml
+支付宝小程序 -> weixin as "weixin-meal": 1.授权 /malllogin/alipay/{code}
+
+weixin -> oauth as "oauth-api": : 2.授权
+oauth -> 支付宝开发平台 : 3.获取支付宝用户信息
+支付宝开发平台 -> oauth : 4.返回用户信息
+oauth -> weixin : 4. 返回结果
+weixin -> 支付宝小程序 : 5. 返回结果
+@enduml
+
+
+
